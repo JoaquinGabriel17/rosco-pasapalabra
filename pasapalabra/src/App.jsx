@@ -102,6 +102,25 @@ export default function Pasapalabra() {
     }
   }, [players, currentPlayer]);
 
+    useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault(); // evita que baje el scroll al apretar espacio
+        togglePause();
+      }
+      if (e.code === "Enter") {
+        e.preventDefault(); // evita que baje el scroll al apretar espacio
+        if(answer.trim() === "") return alert("Por favor, ingresa una respuesta antes de enviar.");
+        doAnswer();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    // cleanup al desmontar el componente
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   function switchTurn() {
     setCurrentPlayer((prev) => (prev === 0 ? 1 : 0));
   }
@@ -210,8 +229,9 @@ export default function Pasapalabra() {
 
   return (
     <div className="app">
+      <div className="left-side">
       <div className="header">
-        <div className="timer"> {mm}:{ss} {p.paused ? "(pausado)" : ""}</div>
+        <div className="timer"> {mm}:{ss} {p.paused ? "(PAUSADO⏸️)" : ""}</div>
         <div className="player-change-container">
         <button onClick={() => setCurrentPlayer(0)} disabled={currentPlayer === 0}>Jugador 1</button>
         <button onClick={() => setCurrentPlayer(1)} disabled={currentPlayer === 1}>Jugador 2</button>
@@ -221,10 +241,7 @@ export default function Pasapalabra() {
           </div>
       </div>
       </div>
-
       
-      
-
       <div className="layout">
       {!players[currentPlayer].selectedRosco &&<h2>Seleccioná un rosco</h2>} 
       {!players[currentPlayer].selectedRosco &&
@@ -250,7 +267,10 @@ export default function Pasapalabra() {
         <div className="rosco">
           <RoscoCircle rosco={p.rosco} />
         </div>}
-       
+       </div>
+       </div>
+      <div className="right-side">
+
         {p.rosco &&
         <div className="panel">
           <div className="clue">Letra actual: {p.rosco[p.idx].letter}</div>
@@ -270,6 +290,10 @@ export default function Pasapalabra() {
         <button onClick={doPass}>Pasapalabra</button>
         <button onClick={restart}>Reiniciar</button>
       </div>
+      <ul className="fast-access-keys"><b>Teclas de acceso rápido:</b>
+        <li><b>Enter:</b> enviar respuesta</li>
+        <li><b>Espacio:</b> pausar/reanudar</li>
+      </ul>
  
         </div>}
       </div>
