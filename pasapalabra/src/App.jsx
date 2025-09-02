@@ -52,8 +52,7 @@ export default function Pasapalabra() {
     if (players[currentPlayer].time === 0) {
       return alert(`${players[currentPlayer].name} ha terminado su tiempo.`);
     }
-    let answeredQuestions = players[currentPlayer].correct + players[currentPlayer].wrong;
-    if (answeredQuestions >= 26) {
+    if (players[currentPlayer].correct + players[currentPlayer].wrong  >= 26) {
       setPlayers((ps) =>
       ps.map((p, i) => ({ ...p, finished: i === currentPlayer && true }))
     );
@@ -111,9 +110,6 @@ export default function Pasapalabra() {
 
 
   function togglePause() {
-     if (players[currentPlayer].finished) {
-      return alert(`${players[currentPlayer].name} ha terminado su juego.`);
-    }
     setPlayers((ps) =>
       ps.map((p, i) => ({ ...p, paused: i === currentPlayer ? !p.paused : true }))
     );
@@ -169,9 +165,7 @@ export default function Pasapalabra() {
 
   function doAnswer() {
     const p = players[currentPlayer];
-    let answeredQuestions = players[currentPlayer].correct + players[currentPlayer].wrong;
-    if (answeredQuestions >= 26) {
-      endTurn(currentPlayer);
+    if (players[currentPlayer].correct + players[currentPlayer].wrong >= 26) {
       return alert(`${players[currentPlayer].name} ha respondido todas las preguntas. Fin del juego.`);
     }
     if (p.finished) return alert('Tu juego ha terminado. Por favor, reinicia para jugar de nuevo.');
@@ -187,7 +181,7 @@ export default function Pasapalabra() {
 
   function doPass() {
     const p = players[currentPlayer];
-    if (p.paused || p.finished) return alert('No puedes pasar si estás en pausa o tu juego ha terminado.');
+    if (p.paused) return alert('No puedes pasar si estás en pausa o tu juego ha terminado.');
     togglePause()
     commitStatus(currentPlayer, "pass");
     moveNext(currentPlayer);
