@@ -14,6 +14,8 @@
     "L": { "q": "starts with L, large feline known as the \"king of the jungle\".", "a": "lion" },
     "M": { "q": "starts with M, an ancient city in Peru.", "a": "Machu Picchu" },
     "N": { "q": "starts with N, a person who helps doctors care for patients.", "a": "nurse" },
+    "O": { "q": "Starts with O: Chemical element essential for breathing.", "a": "Oxygen" },
+    "P": { "q": "Known as the dwarf planet, but it is not a planet.", "a": "Pluto" },
     "Q": { "q": "starts with Q, the capital of Ecuador.", "a": "Quito" },
     "R": { "q": "Starts with R, Shakespeare's tragic play about two young lovers.", "a": "Romeo and Juliet" },
     "S": { "q": "contains S, the largest country in the world.", "a": "Russia" },

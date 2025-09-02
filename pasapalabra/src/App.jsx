@@ -47,7 +47,19 @@ export default function Pasapalabra() {
   // Temporizadores separados
   useEffect(() => {
     if (players[currentPlayer].finished) {
-      return;
+      return alert(`${players[currentPlayer].name} ha terminado su juego.`);
+    }
+    if (players[currentPlayer].time === 0) {
+      return alert(`${players[currentPlayer].name} ha terminado su tiempo.`);
+    }
+    let answeredQuestions = players[currentPlayer].correct + players[currentPlayer].wrong;
+    if (answeredQuestions >= 26) {
+      setPlayers((ps) =>
+      ps.map((p, i) => ({ ...p, finished: i === currentPlayer && true }))
+    );
+      endTurn(currentPlayer);
+
+      return alert(`${players[currentPlayer].name} ha respondido todas las preguntas. Fin del juego.`);
     }
     const id = setInterval(() => {
       setPlayers((ps) =>
@@ -60,7 +72,7 @@ export default function Pasapalabra() {
       );
     }, 1000);
     return () => clearInterval(id);
-  }, [currentPlayer]);
+  }, [currentPlayer], [players]);
 
   useEffect(() => {
     const p = players[currentPlayer];
@@ -92,25 +104,16 @@ export default function Pasapalabra() {
     };
   }, [currentPlayer, answer, players]);
 
-  useEffect(() => {
-  console.log("Jugador actual cambió a:", currentPlayer);
-  // Podés poner lógica que dependa del nuevo currentPlayer acá
-}, [currentPlayer]);
-
   function switchTurn() {
-    console.log("Cambiando turno", currentPlayer);
     setCurrentPlayer((prev) => (prev === 0 ? 1 : 0));
-    console.log("Cambiando turno2", currentPlayer);
   }
 
-  function startGame() {
-    setPlayers((ps) =>
-      ps.map((p, i) => ({ ...p, paused: i !== currentPlayer, finished: false, time: 120 }))
-    );
-  }
+
 
   function togglePause() {
-    console.log("Pausa/Reanuda", players, currentPlayer);
+     if (players[currentPlayer].finished) {
+      return alert(`${players[currentPlayer].name} ha terminado su juego.`);
+    }
     setPlayers((ps) =>
       ps.map((p, i) => ({ ...p, paused: i === currentPlayer ? !p.paused : true }))
     );
@@ -166,7 +169,12 @@ export default function Pasapalabra() {
 
   function doAnswer() {
     const p = players[currentPlayer];
-    if (p.finished) return;
+    let answeredQuestions = players[currentPlayer].correct + players[currentPlayer].wrong;
+    if (answeredQuestions >= 26) {
+      endTurn(currentPlayer);
+      return alert(`${players[currentPlayer].name} ha respondido todas las preguntas. Fin del juego.`);
+    }
+    if (p.finished) return alert('Tu juego ha terminado. Por favor, reinicia para jugar de nuevo.');
     const expected = normalize(p.rosco[p.idx].a);
     const got = normalize(answer);
     if (expected === got) {
@@ -179,7 +187,8 @@ export default function Pasapalabra() {
 
   function doPass() {
     const p = players[currentPlayer];
-    if (p.paused || p.finished) return;
+    if (p.paused || p.finished) return alert('No puedes pasar si estás en pausa o tu juego ha terminado.');
+    togglePause()
     commitStatus(currentPlayer, "pass");
     moveNext(currentPlayer);
     switchTurn();
@@ -265,7 +274,6 @@ export default function Pasapalabra() {
             <button onClick={doAnswer}>Responder</button>
           </div>
            <div className="controls">
-        <button onClick={startGame}>Iniciar</button>
         <button onClick={togglePause}>Pausar/Reanudar</button>
         <button onClick={doPass}>Pasapalabra</button>
         <button onClick={restart}>Reiniciar</button>
