@@ -14,37 +14,6 @@ function normalize(str = "") {
     .trim();
 }
 
-// ====== Banco de preguntas ======
-const QUESTION_BANK = {
-  A: { q: "Empieza por A: País sudamericano cuya capital es Buenos Aires.", a: "Argentina" },
-  B: { q: "Empieza por B: Bebida caliente que se hace con granos tostados.", a: "Cafe" },
-  C: { q: "Empieza por C: Satélite natural de la Tierra.", a: "Luna" },
-  D: { q: "Empieza por D: Día que sigue al lunes.", a: "Martes" },
-  E: { q: "Empieza por E: Parte de una carta donde se anota el destinatario.", a: "Encabezado" },
-  F: { q: "Empieza por F: Animal conocido por su astucia en fábulas.", a: "Zorro" },
-  G: { q: "Empieza por G: Ciencia que estudia la Tierra.", a: "Geologia" },
-  H: { q: "Empieza por H: Utensilio para colgar ropa.", a: "Percha" },
-  I: { q: "Empieza por I: Opus contrario a lo exterior.", a: "Interior" },
-  J: { q: "Empieza por J: Persona que imparte justicia en un tribunal.", a: "Juez" },
-  K: { q: "Empieza por K: Arte marcial originaria de Okinawa.", a: "Karate" },
-  L: { q: "Empieza por L: Satélite natural de la Tierra.", a: "Luna" },
-  M: { q: "Empieza por M: Río que atraviesa Buenos Aires.", a: "Matanza" },
-  N: { q: "Empieza por N: Neumático en algunos países.", a: "Neumatico" },
-  Ñ: { q: "Contiene la Ñ: Grupo musical o conjunto de personas que tocan juntas.", a: "Ensamble" },
-  O: { q: "Empieza por O: Elemento químico esencial para la respiración.", a: "Oxigeno" },
-  P: { q: "Empieza por P: Juego televisivo argentino conducido por Iván de Pineda.", a: "Pasapalabra" },
-  Q: { q: "Empieza por Q: Pregunta breve.", a: "Que" },
-  R: { q: "Empieza por R: Ciudad italiana famosa por el Coliseo.", a: "Roma" },
-  S: { q: "Empieza por S: Arte de preparar y condimentar alimentos.", a: "Sabores" },
-  T: { q: "Empieza por T: Aparato que permite hablar a distancia.", a: "Telefono" },
-  U: { q: "Empieza por U: Lugares de estudio superiores.", a: "Universidades" },
-  V: { q: "Empieza por V: Contrario de derrota.", a: "Victoria" },
-  W: { q: "Empieza por W: Documento en internet (en inglés).", a: "Website" },
-  X: { q: "Contiene la X: Aparato para obtener imágenes del interior del cuerpo.", a: "RayosX" },
-  Y: { q: "Empieza por Y: Instrumento musical de teclas electrónicas (anglicismo).", a: "Yamaha" },
-  Z: { q: "Empieza por Z: Animal rayado de África.", a: "Cebra" },
-};
-
 const COLORS = {
   pending: "#334155",
   current: "#2563eb",
@@ -66,7 +35,6 @@ function inicializarRosco(index) {
 // ====== Componente principal ======
 export default function Pasapalabra() {
 
-  console.log(roscosData)
   const [players, setPlayers] = useState([
     { name: "Jugador 1", rosco: null , selectedRosco:null, correct: 0, wrong: 0, time: 120, paused: true, finished: false, idx: 0 },
     { name: "Jugador 2", rosco: null , selectedRosco:null, correct: 0, wrong: 0, time: 120, paused: true, finished: false, idx: 0 },
@@ -104,7 +72,10 @@ export default function Pasapalabra() {
 
     useEffect(() => {
     const handleKeyDown = (e) => {
+             
+
       if (e.code === "Space") {
+         
         e.preventDefault(); // evita que baje el scroll al apretar espacio
         togglePause();
       }
@@ -119,10 +90,17 @@ export default function Pasapalabra() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [currentPlayer, answer, players]);
+
+  useEffect(() => {
+  console.log("Jugador actual cambió a:", currentPlayer);
+  // Podés poner lógica que dependa del nuevo currentPlayer acá
+}, [currentPlayer]);
 
   function switchTurn() {
+    console.log("Cambiando turno", currentPlayer);
     setCurrentPlayer((prev) => (prev === 0 ? 1 : 0));
+    console.log("Cambiando turno2", currentPlayer);
   }
 
   function startGame() {
@@ -132,6 +110,7 @@ export default function Pasapalabra() {
   }
 
   function togglePause() {
+    console.log("Pausa/Reanuda", players, currentPlayer);
     setPlayers((ps) =>
       ps.map((p, i) => ({ ...p, paused: i === currentPlayer ? !p.paused : true }))
     );
@@ -233,8 +212,9 @@ export default function Pasapalabra() {
       <div className="header">
         <div className="timer"> {mm}:{ss} {p.paused ? "(PAUSADO⏸️)" : ""}</div>
         <div className="player-change-container">
-        <button onClick={() => setCurrentPlayer(0)} disabled={currentPlayer === 0}>Jugador 1</button>
-        <button onClick={() => setCurrentPlayer(1)} disabled={currentPlayer === 1}>Jugador 2</button>
+        <button disabled={currentPlayer === 0} onClick={() => setCurrentPlayer(0)}>Jugador 1</button>
+        <button disabled={currentPlayer === 1} onClick={() => setCurrentPlayer(1)}>Jugador 2</button>
+
                  <div className="stats">
             <div>Aciertos: {p.correct}</div>
             <div>Errores: {p.wrong}</div>
@@ -246,7 +226,7 @@ export default function Pasapalabra() {
       {!players[currentPlayer].selectedRosco &&<h2>Seleccioná un rosco</h2>} 
       {!players[currentPlayer].selectedRosco &&
       <div className="rosco-selection">
-        {[1, 2, 3, 4, 5, 6].map((n) => (
+        {[1, 2].map((n) => (
           <button
             key={n}
             onClick={() => handleSelectRosco(n)}
@@ -294,6 +274,8 @@ export default function Pasapalabra() {
         <li><b>Enter:</b> enviar respuesta</li>
         <li><b>Espacio:</b> pausar/reanudar</li>
       </ul>
+      
+      { selectedRosco === 2 &&  <p className="advice">En este rosco todas las palabras comienzan con la letra actual</p>}
  
         </div>}
       </div>
