@@ -1,0 +1,204 @@
+/* === General === */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #1E1A3F;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  color: #FFFFFF;
+}
+
+.app {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+/* === Header === */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+/* === Rosco en círculo === */
+.rosco {
+  position: relative;
+  width: 400px;   /* tamaño del círculo */
+  height: 400px;
+  margin: 30px auto;
+  border-radius: 50%;
+}
+
+.letter {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  cursor: default;
+  transition: transform 0.2s ease;
+  left: 50%;
+  top: 50%;
+  margin: -20px; /* centra el círculo */
+}
+
+/* Estados de la letra */
+.letter.pending {
+  background: #555;
+}
+.letter.active {
+  background: #ff9800;
+  transform: scale(1.2);
+}
+.letter.correct {
+  background: #4caf50;
+}
+.letter.wrong {
+  background: #f44336;
+}
+.letter.passed {
+  background: #2196f3;
+}
+
+/* === Players === */
+.player {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.player.active {
+  border: 3px solid #000;
+  transform: scale(1.02);
+}
+.timer{
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+  background-color: #004992;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Colores para diferenciar jugadores */
+.player1 {
+  background: #ffe0b2;
+}
+.player2 {
+  background: #c8e6c9;
+}
+
+/* === Pregunta === */
+.question {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* === Inputs y botones === */
+.answer-input {
+  padding: 10px;
+  font-size: 16px;
+  width: 200px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+button {
+  padding: 10px 18px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  background: #FF4081;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #1976d2;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* === Final del juego === */
+h2 {
+  margin-top: 25px;
+}
+
+/* === Controles === */
+.inputRow {
+  margin: 20px 0;
+  width: 90vw;
+}
+.inputRow input{
+  width: 400px;
+  height: 2rem;
+  font-size: 1.2rem;
+  padding: 0 10px;
+  border: 2px solid #3FC1C9;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+.controls {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.stats {
+  margin-top: 15px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  background-color: #004992;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: fit-content;
+}
+
+.clue{
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  background-color: #004992;
+  border-radius: 8px;
+  padding: 15px;
+}
+.rosco-selection{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.player-change-container{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+} 
+
+/*
+azul claro, aqua: #3FC1C9
+verde lima: #A5E61D
+rojo para errores: #E53935
+*/
