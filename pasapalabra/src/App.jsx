@@ -227,6 +227,7 @@ export default function Pasapalabra() {
 
       <div className="layout">
       {!players[currentPlayer].selectedRosco &&<h2>Seleccioná un rosco</h2>} 
+      {!players[currentPlayer].selectedRosco &&
       <div className="rosco-selection">
         {[1, 2, 3, 4, 5, 6].map((n) => (
           <button
@@ -244,7 +245,7 @@ export default function Pasapalabra() {
             Rosco {n}
           </button>
         ))}
-      </div>
+      </div>}
       {p.rosco &&
         <div className="rosco">
           <RoscoCircle rosco={p.rosco} />
